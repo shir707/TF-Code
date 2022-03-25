@@ -11,6 +11,15 @@ module "VirtualNetwork"{
   prefix=var.prefix
 }
 
+module PostgresDb{
+  source="./modules/postgressSql"
+  resource_group_name = module.ResourceGroup.rg_name_out
+  location=var.location
+  virtual_network_id =module.VirtualNetwork.virtual_network_id
+  delegated_subnet_id=module.VirtualNetwork.delegated_subnet_id 
+  administrator_password=var.administrator_password
+}
+
 /*
 module "AppServer"{
   source="./modules/appServer"
@@ -27,15 +36,7 @@ module "LoadBalancer"{
   location=var.location
   lbIp_id=module.VirtualNetwork.lbIp_id
 }
-/*
-module PostgresDb{
-  source="./modules/postgressSql"
-  resource_group_name = module.ResourceGroup.rg_name_out
-  location=var.location
-  virtual_network_id =module.VirtualNetwork.vnet_id
-  delegated_subnet_id=module.VirtualNetwork.privateSubnet_id
-}
-*/
+
 
 
 resource "azurerm_linux_virtual_machine_scale_set" "vmss" {

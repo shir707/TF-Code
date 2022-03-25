@@ -27,3 +27,9 @@ variable "admin_password" {
    description = "password for admin account"
    sensitive=true 
  }
+
+ variable "administrator_password" {
+  type = string
+   description = "password for admin postgress account"
+   sensitive=true 
+ }

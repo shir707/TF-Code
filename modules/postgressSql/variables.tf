@@ -5,7 +5,7 @@ variable "resource_group_name" {
 }
 
 #getting by module
-variable "network_id" {
+variable "virtual_network_id" {
   description = "the id of the network"
 }
 
@@ -15,6 +15,18 @@ variable "location" {
 }
 
 #getting by module
-variable "privateSubnet_id" {
+variable "delegated_subnet_id" {
   description = "the id of the private subnet"
 }
+
+variable "administrator_login" {
+  type = string
+   description = "User name to use as the admin account on the VMs that will be part of the VM scale set"
+   default     = "postgres"
+}
+
+variable "administrator_password" {
+  type = string
+   description = "password for admin postgress account"
+   sensitive=true 
+ }

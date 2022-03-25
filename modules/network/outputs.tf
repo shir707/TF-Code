@@ -2,7 +2,7 @@ output "vnet_name_out" {
   value = azurerm_virtual_network.my_vnet.name
 }
 
-output "vnet_id"{
+output "virtual_network_id"{
   value=azurerm_virtual_network.my_vnet.id
 }
 
@@ -18,9 +18,10 @@ output "subnet_id"{
   value=azurerm_subnet.public_subnet.id
 }
 
-output "privateSubnet_id"{
+output "delegated_subnet_id"{
   value=azurerm_subnet.private_subnet.id
 }
+
 /*
 output "network_interface_ids"{
   value=[azurerm_network_interface.myterraformnic.id]
