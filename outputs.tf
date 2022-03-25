@@ -6,3 +6,7 @@ output "RgName" {
 output "lb_ip"{
   value=module.VirtualNetwork.lb_ip
 }
+
+output "vmss_ip"{
+  value=module.VirtualNetwork.vmss_ip
+}

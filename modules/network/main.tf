@@ -23,6 +23,16 @@ resource "azurerm_subnet" "private_subnet" {
   resource_group_name      = var.resource_group_name
   virtual_network_name = var.vnet_name
   address_prefixes     = ["10.0.1.0/24"]
+  service_endpoints    = ["Microsoft.Storage"]
+  delegation {
+    name = "fs"
+    service_delegation {
+      name = "Microsoft.DBforPostgreSQL/flexibleServers"
+      actions = [
+        "Microsoft.Network/virtualNetworks/subnets/join/action",
+      ]
+    }
+  }
   depends_on = [
     azurerm_virtual_network.my_vnet
   ]
@@ -35,7 +45,16 @@ resource "azurerm_subnet" "private_subnet" {
   location                 = var.location
   allocation_method            = "Static"
   sku="Standard"
+  depends_on=[var.resource_group_name]
  }
+
+ resource "azurerm_public_ip_prefix" "vmss_ip" {
+  name                = "${var.prefix}-pip"
+  resource_group_name      = var.resource_group_name
+  location                 = var.location
+  prefix_length = 30
+  depends_on=[var.resource_group_name]
+}
 
 # Create Network Security Group and rule
 resource "azurerm_network_security_group" "app_nsg" {
@@ -44,7 +63,7 @@ resource "azurerm_network_security_group" "app_nsg" {
   location                 = var.location
 
   security_rule {
-    name                       = "SSH"
+    name                       = "SSH_allow"
     priority                   = 300
     direction                  = "Inbound"
     access                     = "Allow"
@@ -55,8 +74,19 @@ resource "azurerm_network_security_group" "app_nsg" {
     destination_address_prefix = "*"
   }
    security_rule {
-    name                       = "Port_8080"
+    name                       = "SSH_deny"
     priority                   = 310
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "22"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+   security_rule {
+    name                       = "Port_8080"
+    priority                   = 320
     direction                  = "Inbound"
     access                     = "Allow"
     protocol                   = "*"

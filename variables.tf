@@ -1,11 +1,13 @@
 variable "prefix" {
+  type=string
   description = "The prefix which should be used for all resources in this example"
+  default="week5"
 }
 
 variable "base_name" {
     type = string
     description = "The base of the name for the resource group and storage account"
-    default="Vnet"
+    default="Bootcamp"
 }
 
 variable "location" {
@@ -15,11 +17,13 @@ variable "location" {
 }
 
 variable "admin_user" {
+  type = string
    description = "User name to use as the admin account on the VMs that will be part of the VM scale set"
    default     = "azureuser"
 }
 
 variable "admin_password" {
-   description = "Default password for admin account"
-   default="Pass1234"
-}
+  type = string
+   description = "password for admin account"
+   sensitive=true 
+ }

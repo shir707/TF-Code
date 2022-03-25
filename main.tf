@@ -8,6 +8,7 @@ module "VirtualNetwork"{
   source="./modules/network"
   resource_group_name = module.ResourceGroup.rg_name_out
   location=var.location
+  prefix=var.prefix
 }
 
 /*
@@ -26,14 +27,23 @@ module "LoadBalancer"{
   location=var.location
   lbIp_id=module.VirtualNetwork.lbIp_id
 }
+/*
+module PostgresDb{
+  source="./modules/postgressSql"
+  resource_group_name = module.ResourceGroup.rg_name_out
+  location=var.location
+  virtual_network_id =module.VirtualNetwork.vnet_id
+  delegated_subnet_id=module.VirtualNetwork.privateSubnet_id
+}
+*/
 
 
 resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
   name                            = "${var.prefix}-vmss"
   resource_group_name = module.ResourceGroup.rg_name_out
   location=var.location
-  sku                             = "Standard_F2"
-  instances                       = 3
+  sku                             = "Standard_B2s"
+  instances                       = 2
   admin_username                  = var.admin_user
   admin_password                  = var.admin_password
   disable_password_authentication = false
@@ -54,6 +64,11 @@ resource "azurerm_linux_virtual_machine_scale_set" "vmss" {
       primary   = true
       subnet_id = module.VirtualNetwork.subnet_id
       load_balancer_backend_address_pool_ids =[module.LoadBalancer.backendPool_id]
+
+      public_ip_address {
+        name                = "first"
+        public_ip_prefix_id = module.VirtualNetwork.vmss_ip
+      }
     }
   }
 
@@ -82,8 +97,8 @@ resource "azurerm_monitor_autoscale_setting" "main" {
     name = "AutoScale"
 
     capacity {
-      default = 3
-      minimum = 1
+      default = 2
+      minimum = 2
       maximum = 5
     }
 

@@ -9,6 +9,10 @@ variable "location" {
     description = "The location for the deployment"
 }
 
+variable "prefix" {
+  description = "The prefix which should be used for all resources in this example"
+}
+
 variable "vnet_name" {
     type = string
     description = "The name of the vnet"
