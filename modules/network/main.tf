@@ -97,11 +97,62 @@ resource "azurerm_network_security_group" "app_nsg" {
   }
 }
 
-resource "azurerm_subnet_network_security_group_association" "nsg_association" {
+# Create Network Security Group and rule
+resource "azurerm_network_security_group" "db_nsg" {
+  name                = "db-nsg"
+   resource_group_name      = var.resource_group_name
+  location                 = var.location
+
+  security_rule {
+    name                       = "postgres_allow"
+    priority                   = 300
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5432"
+    source_address_prefix      = "10.0.0.5"
+    destination_address_prefix = "*"
+  }
+   security_rule {
+    name                       = "postgres_allow2"
+    priority                   = 310
+    direction                  = "Inbound"
+    access                     = "Allow"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5432"
+    source_address_prefix      = "10.0.0.7"
+    destination_address_prefix = "*"
+  }
+   security_rule {
+    name                       = "postgres_deny"
+    priority                   = 320
+    direction                  = "Inbound"
+    access                     = "Deny"
+    protocol                   = "Tcp"
+    source_port_range          = "*"
+    destination_port_range     = "5432"
+    source_address_prefix      = "*"
+    destination_address_prefix = "*"
+  }
+}
+
+#connect app subnet to app_nsg
+resource "azurerm_subnet_network_security_group_association" "appNsg_association" {
   subnet_id                 = azurerm_subnet.public_subnet.id
   network_security_group_id = azurerm_network_security_group.app_nsg.id
   depends_on = [
     azurerm_network_security_group.app_nsg
+  ]
+}
+
+#connect db subnet to db_nsg
+resource "azurerm_subnet_network_security_group_association" "dbNsg_association" {
+  subnet_id                 = azurerm_subnet.private_subnet.id
+  network_security_group_id = azurerm_network_security_group.db_nsg.id
+  depends_on = [
+    azurerm_network_security_group.db_nsg
   ]
 }
 /*
