@@ -1,11 +1,11 @@
 ## General Info
-*In this project, I implemented terraform code in order to create azure resources.
-*This project implemented by using modules, and one root module that is using that modules.
-*I created vnet with two subnets: "public" and "private". Each subnet has his own NSG role.
-*I created a load balancer with scale set by terraform code.
-*The bootcamp application is installed on that machines (github link for the application: https://github.com/shir707/bootcamp-app)
-*I created managed flexible postgres-dd in order to save the progress for each user.
-*And created storage account in order to store the Terraform state
+*In this project, I implemented terraform code in order to create azure resources.<br />
+*This project implemented by using modules, and one root module that is using that modules.<br />
+*I created vnet with two subnets: "public" and "private". Each subnet has his own NSG role.<br />
+*I created a load balancer with scale set by terraform code.<br />
+*The bootcamp application is installed on that machines (github link for the application: https://github.com/shir707/bootcamp-app)<br />
+*I created managed flexible postgres-dd in order to save the progress for each user.<br />
+*And created storage account in order to store the Terraform state.<br />
 
 ## Requirements for terraform code
 
@@ -15,10 +15,10 @@
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | ~> 2.65 |
 
 ## Setup
-1.clone or download source files
-2.run on the terminal: "terraform init"
-3.run on the terminal: "terraform plan -out plan.out"
-4.run on the terminal: "terraform apply plan.out"
+1.clone or download source files<br />
+2.run on the terminal: "terraform init"<br />
+3.run on the terminal: "terraform plan -out plan.out"<br />
+4.run on the terminal: "terraform apply plan.out"<br />
 
 ## In order to connect to the website application
 write in your browser http://20.127.181.133:8080/
