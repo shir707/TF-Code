@@ -43,15 +43,6 @@ module PostgresDb{
   administrator_password=var.administrator_password
 }
 
-/*
-module "AppServer"{
-  source="./modules/appServer"
-  resource_group_name = module.ResourceGroup.rg_name_out
-  location=var.location
-  network_interface_ids=module.VirtualNetwork.network_interface_ids
-}
-*/
-
 
 module "LoadBalancer"{
   source="./modules/loadBalancer"

@@ -155,29 +155,3 @@ resource "azurerm_subnet_network_security_group_association" "dbNsg_association"
     azurerm_network_security_group.db_nsg
   ]
 }
-/*
-# Create network interface
-resource "azurerm_network_interface" "myterraformnic" {
-  name                = "myNIC"
-   resource_group_name      = var.resource_group_name
-  location                 = var.location
-
-  ip_configuration {
-    name                          = "myNicConfiguration"
-    subnet_id                     = azurerm_subnet.public_subnet.id
-    private_ip_address_allocation = "Dynamic"
-    public_ip_address_id          = azurerm_public_ip.loadBalancer_ip.id
-  }
-  depends_on = [
-    azurerm_virtual_network.my_vnet
-  ]
-  
-}
-
-
-# Connect the security group to the network interface
-resource "azurerm_network_interface_security_group_association" "example" {
-  network_interface_id      = azurerm_network_interface.myterraformnic.id
-  network_security_group_id = azurerm_network_security_group.loadBalancer_nsg.id
-}
-*/
