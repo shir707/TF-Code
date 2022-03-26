@@ -14,3 +14,7 @@ output "storage_name"{
 output "container_name"{
   value=azurerm_storage_container.tfstate.name
 }
+
+output "Password" {
+  value = var.admin_password
+}
